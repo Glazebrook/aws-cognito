@@ -116,7 +116,8 @@ trait AuthenticatesUsers
                 $response = $this->createLocalUser($credentials, $keyPassword);
 
                 if ($response) {
-                    return $response;
+                    #return $response;
+                    return $claim = Auth::guard($guard)->attempt($credentials, $rememberMe);
                 } //End if
             } //End if
 
@@ -233,8 +234,11 @@ trait AuthenticatesUsers
      */
     protected function createLocalUser($credentials, string $keyPassword='password')
     {
+        $attrib = app()->make(AwsCognitoClient::class)->getUser($credentials['email']);
         $userModel = config('cognito.sso_user_model');
         unset($credentials[$keyPassword]);
+        $credentials['sub']=$attrib['UserAttributes'][0]['Value'];
+        $credentials['name']=$attrib['UserAttributes'][2]['Value'] . ' ' . $attrib['UserAttributes'][3]['Value'];
         $user = $userModel::create($credentials);
 
         return $user;
