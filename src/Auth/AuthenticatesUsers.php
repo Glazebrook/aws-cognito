@@ -239,6 +239,7 @@ trait AuthenticatesUsers
         unset($credentials[$keyPassword]);
         $credentials['sub']=$attrib['UserAttributes'][0]['Value'];
         $credentials['name']=$attrib['UserAttributes'][2]['Value'] . ' ' . $attrib['UserAttributes'][3]['Value'];
+        $credentials['active']=-1;
         $user = $userModel::create($credentials);
 
         return $user;
