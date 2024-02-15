@@ -237,6 +237,7 @@ trait AuthenticatesUsers
         $attrib = app()->make(AwsCognitoClient::class)->getUser($credentials['email']);
         $userModel = config('cognito.sso_user_model');
         unset($credentials[$keyPassword]);
+        dd($attrib);
         $credentials['sub']=$attrib['UserAttributes'][0]['Value'];
         $credentials['name']=$attrib['UserAttributes'][2]['Value'] . ' ' . $attrib['UserAttributes'][3]['Value'];
         $credentials['active']=-1;
