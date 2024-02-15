@@ -118,6 +118,8 @@ trait AuthenticatesUsers
                 if ($response) {
                     #return $response;
                     return $claim = Auth::guard($guard)->attempt($credentials, $rememberMe);
+                }else{
+                    return $this->sendFailedLoginResponse($request, $e, $isJsonResponse, $paramUsername);
                 } //End if
             } //End if
 
