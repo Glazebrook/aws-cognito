@@ -117,7 +117,11 @@ trait AuthenticatesUsers
 
                 if ($response) {
                     #return $response;
+                    try{
                     return $claim = Auth::guard($guard)->attempt($credentials, $rememberMe);
+                    } catch (Exception $e){
+                        return $this->sendFailedLoginResponse($request, $e, $isJsonResponse, $paramUsername);
+                    }
                 }else{
                     return $this->sendFailedLoginResponse($request, $e, $isJsonResponse, $paramUsername);
                 } //End if
